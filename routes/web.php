@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AuthController;
 use GuzzleHttp\Middleware;
 
 /*
@@ -20,7 +21,12 @@ use GuzzleHttp\Middleware;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $firstname = "Bill";
+    $lastname = "Gates";
+    $age = "60";
+
+    $result = compact("firstname", "lastname", "age");
+    return collect($result);
 });
 
 Route::get('name', function () {
@@ -50,7 +56,6 @@ Route::group(['middleware' => 'check.dirty'], function () {
 
 Route::resource('cart', 'CartController');
 Route::resource('cart-items', 'CartItemController');
-Route::resource('validator', 'validatorController');
 
 
 Route::group(
@@ -61,9 +66,11 @@ Route::group(
     ],
     function () {
         Route::get('home', [HomeController::class, 'getHome']);
-        Route::get('homePage', [HomeController::class, 'homePage']);
+        Route::post('homePage', [HomeController::class, 'homePage']);
     }
 );
 
 Route::post('/login', [LoginController::class, 'postLogin']);
 // Route::post('/login', LoginController::class);
+
+Route::post('/sign-up', [AuthController::class, 'signUp']);

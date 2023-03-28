@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOwner extends Migration
+class AddSoftDelectToCartItems extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class CreateOwner extends Migration
      */
     public function up()
     {
-        Schema::create('owner', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('cart_items', function (Blueprint $table) {
+            $table->softDeletes();
         });
     }
 
@@ -26,6 +25,8 @@ class CreateOwner extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('owner');
+        Schema::table('cart_items', function (Blueprint $table) {
+            Schema::dropSoftDelects();
+        });
     }
 }

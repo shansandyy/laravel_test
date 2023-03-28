@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use Attribute;
 use  Illuminate\support\Facades\DB;
 use  Illuminate\support\Facades\Validator;
-use APP\Http\Requests\UpdateCartItem;
+use  Illuminate\Http\Request;
+use  Illuminate\Support\Collection;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
+use  App\Http\Requests\UpdateCartItem;
+use  App\Models\Cart;
+use  App\Models\CartItem;
+use  App\Models\Product;
 
 class CartItemController extends Controller
 {
@@ -19,7 +22,9 @@ class CartItemController extends Controller
      */
     public function index()
     {
-        $cartItem = DB::table('cart_items')->distinct()->get();
+        // $cartItem = DB::table('cart_items')->distinct()->get();
+        $cartItem = Product::find(2)->cartItems()->get();
+
         return response(collect($cartItem));
     }
 
@@ -60,7 +65,14 @@ class CartItemController extends Controller
         // dd($validateData);
 
         $req = $request->all();
-        DB::table('cart_items')->insert(
+
+        // $cart = Cart::find($validateData['cart_id']);
+        // $result = $cart->cartItems()->create([
+        //         'quantity' => $validateData['quantity'],
+        //         'product_id' => $validateData['product_id']
+        //     ]);
+
+        CartItem::insert(
             [
                 'cart_id' => $validateData['cart_id'],
                 'quantity' => $validateData['quantity'],
@@ -70,7 +82,7 @@ class CartItemController extends Controller
             ]
         );
 
-        return response()->json(true);
+        return response()->json('ok');
     }
 
     /**
@@ -123,7 +135,9 @@ class CartItemController extends Controller
      */
     public function destroy($id)
     {
-        DB::table('cart_items')->where('id', $id)->delete();
+        // DB::table('cart_items')->where('id', $id)->delete();
+        
+        CartItem::withTrashed()->find($id)->forceDelete();
 
         return response()->json(true);
     }

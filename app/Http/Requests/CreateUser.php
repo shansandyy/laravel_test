@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCartItem extends APIRequest
+class CreateUser extends APIRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,14 +24,9 @@ class UpdateCartItem extends APIRequest
     public function rules()
     {
         return [
-            'quantity' => 'required|integer|between:1,20'
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'quantity.between' => '數量需小於20'
+            'name' => 'required|max:20|string',
+            'email' => 'required|email|max:50|string|unique:users',
+            'password' => 'required|string|min:6|confirmed',
         ];
     }
 }
