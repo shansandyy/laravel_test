@@ -23,7 +23,7 @@ class LoginController extends Controller{
         // };
 
         $url = $request->url();
-        return response($url);  // http://127.0.0.1:8000/login
+        // return response($url);  // http://127.0.0.1:8000/login
 
     }
 
