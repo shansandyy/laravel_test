@@ -7,6 +7,8 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ViewProductController;
+
 // use App\Http\Controllers\Product\testController;
 use GuzzleHttp\Middleware;
 
@@ -30,13 +32,18 @@ Route::get('/', function () {
     // $age = "60";
 
     // $result = compact("firstname", "lastname", "age");
-    return 'aaa';
+    return view('web.wel');
 });
 
 Route::get('name', function () {
     return view('login');
 });
 
+Route::get('view-product', 'ViewProductController');
+Route::get('view-prod', [ViewProductController::class, 'testtest']);
+Route::get('get-object', [ViewProductController::class, 'getObjectVars']);
+
+// Route::get('view-prod', [ViewProductController::class, 'index']);
 // Route::get('user/{id}', function ($id) {
 //     return 'id' . $id;
 // })
@@ -77,8 +84,7 @@ Route::group(
 // Route::post('/login', [LoginController::class, 'postLogin']);
 // Route::post('/login', LoginController::class);
 
-Route::resource('cart', 'CartController');
-Route::resource('cart-items', 'CartItemController');
+
 Route::post('signup', [AuthController::class, 'signup']);
 Route::post('login', [AuthController::class, 'login']);
 
@@ -90,4 +96,6 @@ Route::get('test', [TestController::class, 'store']);
 Route::group(['middleware' => 'auth:api'], function () {
     Route::get('user', [AuthController::class, 'user']);
     Route::get('logout', [AuthController::class, 'logout']);
+    Route::resource('cart', 'CartController');
+    Route::resource('cart-items', 'CartItemController');
 });
