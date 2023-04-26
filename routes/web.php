@@ -13,6 +13,7 @@ use App\Http\Controllers\ViewProductController;
 use GuzzleHttp\Middleware;
 
 use App\Http\Controllers\Test\TestController;
+use App\Http\Controllers\Test\ToolController;
 
 
 /*
@@ -42,6 +43,10 @@ Route::get('name', function () {
 Route::get('view-product', 'ViewProductController');
 Route::get('view-prod', [ViewProductController::class, 'testtest']);
 Route::get('get-object', [ViewProductController::class, 'getObjectVars']);
+Route::get('get-items', [ViewProductController::class, 'getcartitem']);
+
+Route::get('makeCSV', [ViewProductController::class, 'makeCSV']);
+
 
 // Route::get('view-prod', [ViewProductController::class, 'index']);
 // Route::get('user/{id}', function ($id) {
@@ -99,3 +104,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('cart', 'CartController');
     Route::resource('cart-items', 'CartItemController');
 });
+
+// jobs
+Route::post('update-product-price', [ToolController::class, 'updatePrice']);
