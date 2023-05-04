@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use  Illuminate\support\Facades\DB;
+use Illuminate\Support\Str;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 
 class ProductController extends Controller
 {
@@ -35,8 +39,8 @@ class ProductController extends Controller
                 $join->on('sbl_teams.id', '=', 'sbl_team_data.team_id')
                     ->where('sbl_teams.total_win', '>', '200');
             })
-            ->select('*')
-            ->dd();
+            ->select('*');
+        // ->dd();
 
         // $data = DB::table('owner')->insertGetId(['team_id' => '3']);
 
@@ -50,8 +54,35 @@ class ProductController extends Controller
         // $newData = $this -> getData();
 
         // dd(DB::getQueryLog());
-        return response(collect($data));
 
+
+        DB::enableQueryLog();
+        # redis 相較由 DB 快了一倍
+        // dump(now());
+        // for ($i = 0; $i < 50000; $i++) {
+        // $product = json_decode(Redis::get('products'));  // redis
+        $product = Product::with('favorite_user')->orderBy('created_at')->get();   // DB
+        // }
+
+
+        // dump(now());
+
+        $requestId = (string) Str::uuid();
+
+        // Log::withContext([
+        //     'request-id' => $requestId,
+        // ]);
+
+        # logging
+        // Log::info([
+        //     'request-id' => $requestId,
+        //     'name' => 'Leo',
+        // ]);
+        // Log::info(print_r(DB::getQueryLog(), true));
+
+        Log::info('get uuid NUM:', ['request-id' => $requestId]);
+
+        return response($product);
 
 
 
@@ -72,6 +103,14 @@ class ProductController extends Controller
         // );
     }
 
+    /** 
+     * 創建 service 
+     */
+    public function ShortUrlService()
+    {
+    }
+
+
     /**
      * Show the form for creating a new resource.
      *
@@ -90,11 +129,13 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $this->getData();
-        $postData = $request->all();
-        $data->push(collect($postData));
+        // $data = $this->getData();
+        // $postData = $request->all();
+        // $data->push(collect($postData));
         // dump($data);
-        return response($data);
+
+        // $request
+        return $request;
     }
 
     /**

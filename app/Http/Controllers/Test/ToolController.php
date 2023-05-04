@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Test;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
+
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Jobs\UpdateProductPrice;
@@ -20,5 +22,12 @@ class ToolController extends Controller
         // $job = (new UpdateProductPrice())->onQueue('email');
         // dispatch($job);
         return 'Done!';
+    }
+
+    public function setProductRedis()
+    {
+        Redis::set('products', json_encode(Product::with('cartItems')->get()));
+
+        return 'success!';
     }
 }

@@ -23,9 +23,11 @@ class CartItemController extends Controller
     public function index()
     {
         // $cartItem = DB::table('cart_items')->distinct()->get();
-        $cartItem = Product::find(2)->cartItems()->get();
+        // $cartItem = Product::find(2)->cartItems()->get();
+        $cartItem = Product::query()->with('cartItems')->findOrFail(1);
 
-        return response(collect($cartItem));
+
+        return response()->json($cartItem);
     }
 
     /**

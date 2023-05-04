@@ -5,9 +5,11 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ViewProductController;
+use App\Http\Controllers\UserServiceController;
 
 // use App\Http\Controllers\Product\testController;
 use GuzzleHttp\Middleware;
@@ -67,10 +69,10 @@ Route::get('member', [MemberController::class, 'nowMember']);
 // Route::get('/member', [MemberController::class, 'nowMember'])->name('member');
 
 // Route::group(['middleware' => 'check.dirty'], function () {
-//     Route::resource('products', 'ProductController');
+Route::resource('products', 'ProductController');
 // });
 // Route::post('products', 'Product\ProductController@store');
-
+Route::get('get-product-redis', [ProductController::class, 'index']);
 
 
 
@@ -107,3 +109,9 @@ Route::group(['middleware' => 'auth:api'], function () {
 
 // jobs
 Route::post('update-product-price', [ToolController::class, 'updatePrice']);
+
+// set redis
+Route::post('set-product-redis', [ToolController::class, 'setProductRedis']);
+
+// services
+Route::post('useService', [UserServiceController::class, 'index']);

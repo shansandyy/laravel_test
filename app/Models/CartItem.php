@@ -23,13 +23,22 @@ class CartItem extends Model
     // ];
 
     protected $appends = [
-        'total_price'
+        'total_price', 'test'
     ];
 
     public function getTotalPriceAttribute()
     {
         return $this->quantity * 100;
     }
+    public function getTestAttribute()
+    {
+        return $this->quantity * 10;
+    }
+
+    // public function getUpdatedAtAttribute($value)
+    // {
+    //     return $value ? $value : '';
+    // }
 
     public function product()
     {
